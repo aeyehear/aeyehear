@@ -68,7 +68,7 @@
 
     th,
     td {
-      padding: 12px 14px;
+      padding: 10px 14px;
       border-bottom: 1px solid var(--line);
       vertical-align: middle;
     }
@@ -91,40 +91,38 @@
       text-align: center;
     }
 
-    .metric-table col.surface-col {
-      width: 18%;
-    }
-
-    .metric-table col.method-col {
-      width: 17%;
-    }
-
-    .metric-table col.metric-col {
-      width: 13%;
-    }
+    .metric-table col.target-col  { width: 25%; }
+    .metric-table col.method-col  { width: 24%; }
+    .metric-table col.metric-col  { width: 17%; }
 
     .clip {
       background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 10px;
-      padding: 20px;
-      margin: 24px 0;
+      padding: 24px;
+      margin: 28px 0;
     }
 
     .clip-header {
-      display: grid;
-      grid-template-columns: 260px 1fr;
-      gap: 20px;
-      align-items: start;
-      margin-bottom: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 20px;
     }
 
     .frame {
-      width: 250px;
+      width: 480px;
       max-width: 100%;
-      border-radius: 6px;
+      border-radius: 8px;
       border: 1px solid var(--line);
       background: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .clip-info {
+      flex: 1;
+      min-width: 280px;
     }
 
     .transcript {
@@ -144,17 +142,17 @@
 
     .clip th:first-child,
     .clip td:first-child {
-      width: 16%;
+      width: 22%;
     }
 
     .clip th:nth-child(2),
     .clip td:nth-child(2) {
-      width: 24%;
+      width: 26%;
     }
 
     .clip th:nth-child(3),
     .clip td:nth-child(3) {
-      width: 60%;
+      width: 52%;
     }
 
     .spec {
@@ -172,39 +170,15 @@
 
     .method {
       white-space: nowrap;
-      font-weight: 700;
-    }
-
-    .note {
-      padding: 14px 16px;
-      background: var(--accent-soft);
-      border-left: 4px solid var(--accent);
-      border-radius: 6px;
-      color: #24435c;
+      font-weight: 600;
     }
 
     @media (max-width: 900px) {
-      main {
-        padding: 28px 14px 48px;
-      }
-
-      .clip-header {
-        grid-template-columns: 1fr;
-      }
-
-      table {
-        display: block;
-        overflow-x: auto;
-      }
-
-      th,
-      td {
-        min-width: 130px;
-      }
-
-      .spec {
-        width: 520px;
-      }
+      main { padding: 28px 14px 48px; }
+      .clip-header { flex-direction: column; align-items: flex-start; }
+      table { display: block; overflow-x: auto; }
+      th, td { min-width: 130px; }
+      .spec { width: 520px; }
     }
   </style>
 </head>
@@ -213,76 +187,429 @@
     <header>
       <h1>AEyeHear</h1>
       <p>
-        Both AEyeHear and the MIT-VM-RS baseline receive the same fixed
+        Both AEyeHear and baseline systems receive the same fixed
         55-4000 Hz analysis filter to ensure equivalent bandwidth comparison.
         The 4000 Hz upper bound reflects the attenuation limit imposed by
         exposure. No signal-adaptive speech enhancement or post-processing is
-        applied.
+        applied. A symmetric 120 ms boundary margin
+        is trimmed to remove loudspeaker mechanical and electrical transient clicks.
       </p>
     </header>
 
-    <h2>Quantitative Performance</h2>
+    <h2>Quantitative Benchmark & Breakdown</h2>
 
     <table class="metric-table">
       <colgroup>
-        <col class="surface-col">
+        <col class="target-col">
         <col class="method-col">
-        <col class="metric-col">
-        <col class="metric-col">
         <col class="metric-col">
         <col class="metric-col">
         <col class="metric-col">
       </colgroup>
       <thead>
         <tr>
-          <th rowspan="2">Surface</th>
-          <th rowspan="2">Method</th>
-          <th colspan="2">Mary (Music)</th>
-          <th colspan="3">TIMIT (Speech)</th>
-        </tr>
-        <tr>
-          <th>SI-SDR</th>
-          <th>Log-spec</th>
-          <th>SI-SDR</th>
-          <th>STOI</th>
-          <th>PESQ-WB</th>
+          <th>Utterance / Signal</th>
+          <th>Method</th>
+          <th>SI-SDR (dB) &uarr;</th>
+          <th>Log-spec &uarr;</th>
+          <th>STOI &uarr;</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td rowspan="2">Checkerboard</td>
-          <td>MIT-VM-RS</td>
-          <td>-10.28</td>
-          <td>0.74</td>
-          <td>-21.78</td>
-          <td>0.40</td>
-          <td>1.04</td>
+        
+        <tr style="background: #e2e8f0; font-weight: bold;">
+          <td colspan="5" style="text-align: left; padding-left: 14px;">CHECKERBOARD</td>
         </tr>
-        <tr>
-          <td><strong>AEyeHear</strong></td>
-          <td><strong>-9.21</strong></td>
-          <td><strong>0.85</strong></td>
-          <td><strong>-15.78</strong></td>
-          <td><strong>0.46</strong></td>
-          <td>1.04</td>
+        
+            <tr>
+              <td rowspan="4">Music (Mary)</td>
+              <td>MIT-VM-RS</td>
+              <td>-10.20</td>
+              <td>0.74</td>
+              <td>-</td>
+            </tr>
+            
+            <tr>
+              
+              <td>Independent+Janssen</td>
+              <td>-10.77</td>
+              <td>0.76</td>
+              <td>-</td>
+            </tr>
+            
+            <tr>
+              
+              <td>TCN+Janssen</td>
+              <td>-10.03</td>
+              <td><strong>0.86</strong></td>
+              <td>-</td>
+            </tr>
+            
+            <tr>
+              
+              <td>AEyeHear</td>
+              <td><strong>-9.14</strong></td>
+              <td>0.85</td>
+              <td>-</td>
+            </tr>
+            
+                <tr>
+                  <td rowspan="4" style="border-top: 1px dashed var(--line);">Male 1 (MCCS0-SA1)</td>
+                  <td style="border-top: 1px dashed var(--line);">MIT-VM-RS</td>
+                  <td style="border-top: 1px dashed var(--line);">-24.58</td>
+                  <td style="border-top: 1px dashed var(--line);">0.34</td>
+                  <td style="border-top: 1px dashed var(--line);">0.41</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >Independent+Janssen</td>
+                  <td >-21.94</td>
+                  <td >0.37</td>
+                  <td >0.38</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >TCN+Janssen</td>
+                  <td ><strong>-13.03</strong></td>
+                  <td ><strong>0.65</strong></td>
+                  <td >0.44</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >AEyeHear</td>
+                  <td >-15.73</td>
+                  <td >0.54</td>
+                  <td ><strong>0.45</strong></td>
+                </tr>
+                
+                <tr>
+                  <td rowspan="4" style="border-top: 1px dashed var(--line);">Male 2 (MCCS0-SA2)</td>
+                  <td style="border-top: 1px dashed var(--line);">MIT-VM-RS</td>
+                  <td style="border-top: 1px dashed var(--line);">-23.36</td>
+                  <td style="border-top: 1px dashed var(--line);">0.37</td>
+                  <td style="border-top: 1px dashed var(--line);">0.45</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >Independent+Janssen</td>
+                  <td >-24.14</td>
+                  <td >0.38</td>
+                  <td >0.45</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >TCN+Janssen</td>
+                  <td ><strong>-19.47</strong></td>
+                  <td >0.37</td>
+                  <td ><strong>0.51</strong></td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >AEyeHear</td>
+                  <td >-22.04</td>
+                  <td ><strong>0.44</strong></td>
+                  <td >0.46</td>
+                </tr>
+                
+                <tr>
+                  <td rowspan="4" style="border-top: 1px dashed var(--line);">Female 1 (FADG0-SA1)</td>
+                  <td style="border-top: 1px dashed var(--line);">MIT-VM-RS</td>
+                  <td style="border-top: 1px dashed var(--line);">-18.93</td>
+                  <td style="border-top: 1px dashed var(--line);">0.37</td>
+                  <td style="border-top: 1px dashed var(--line);">0.40</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >Independent+Janssen</td>
+                  <td >-17.06</td>
+                  <td >0.41</td>
+                  <td >0.43</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >TCN+Janssen</td>
+                  <td ><strong>-11.14</strong></td>
+                  <td >0.55</td>
+                  <td >0.38</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >AEyeHear</td>
+                  <td >-14.00</td>
+                  <td ><strong>0.56</strong></td>
+                  <td ><strong>0.45</strong></td>
+                </tr>
+                
+                <tr>
+                  <td rowspan="4" style="border-top: 1px dashed var(--line);">Female 2 (FADG0-SA2)</td>
+                  <td style="border-top: 1px dashed var(--line);">MIT-VM-RS</td>
+                  <td style="border-top: 1px dashed var(--line);">-14.80</td>
+                  <td style="border-top: 1px dashed var(--line);">0.42</td>
+                  <td style="border-top: 1px dashed var(--line);">0.38</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >Independent+Janssen</td>
+                  <td >-14.22</td>
+                  <td >0.46</td>
+                  <td >0.40</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >TCN+Janssen</td>
+                  <td ><strong>-6.29</strong></td>
+                  <td ><strong>0.66</strong></td>
+                  <td >0.37</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >AEyeHear</td>
+                  <td >-9.44</td>
+                  <td >0.61</td>
+                  <td ><strong>0.43</strong></td>
+                </tr>
+                
+            <tr style="background: #f8fafc;">
+              <td rowspan="4" style="background: #f8fafc; font-weight: 600; border-top: 2px solid var(--line);">Overall Speech Mean</td>
+              <td style="border-top: 2px solid var(--line);">MIT-VM-RS</td>
+              <td style="border-top: 2px solid var(--line);">-20.99</td>
+              <td style="border-top: 2px solid var(--line);">0.37</td>
+              <td style="border-top: 2px solid var(--line);">0.41</td>
+            </tr>
+            
+            <tr style="background: #f8fafc;">
+              
+              <td style="">Independent+Janssen</td>
+              <td style="">-19.78</td>
+              <td style="">0.40</td>
+              <td style="">0.41</td>
+            </tr>
+            
+            <tr style="background: #f8fafc;">
+              
+              <td style="">TCN+Janssen</td>
+              <td style=""><strong>-12.86</strong></td>
+              <td style=""><strong>0.56</strong></td>
+              <td style="">0.43</td>
+            </tr>
+            
+            <tr style="background: #f8fafc;">
+              
+              <td style="">AEyeHear</td>
+              <td style="">-15.65</td>
+              <td style="">0.53</td>
+              <td style=""><strong>0.45</strong></td>
+            </tr>
+            
+        
+        <tr style="background: #e2e8f0; font-weight: bold;">
+          <td colspan="5" style="text-align: left; padding-left: 14px;">CHIP WRAPPER</td>
         </tr>
-        <tr>
-          <td rowspan="2">Chip Wrapper</td>
-          <td>MIT-VM-RS</td>
-          <td>-17.14</td>
-          <td>0.51</td>
-          <td>-26.10</td>
-          <td>0.33</td>
-          <td>1.03</td>
-        </tr>
-        <tr>
-          <td><strong>AEyeHear</strong></td>
-          <td><strong>-10.50</strong></td>
-          <td><strong>0.77</strong></td>
-          <td><strong>-20.04</strong></td>
-          <td>0.33</td>
-          <td><strong>1.11</strong></td>
-        </tr>
+        
+            <tr>
+              <td rowspan="4">Music (Mary)</td>
+              <td>MIT-VM-RS</td>
+              <td>-17.00</td>
+              <td>0.51</td>
+              <td>-</td>
+            </tr>
+            
+            <tr>
+              
+              <td>Independent+Janssen</td>
+              <td>-16.09</td>
+              <td>0.53</td>
+              <td>-</td>
+            </tr>
+            
+            <tr>
+              
+              <td>TCN+Janssen</td>
+              <td>-25.08</td>
+              <td>0.51</td>
+              <td>-</td>
+            </tr>
+            
+            <tr>
+              
+              <td>AEyeHear</td>
+              <td><strong>-10.19</strong></td>
+              <td><strong>0.78</strong></td>
+              <td>-</td>
+            </tr>
+            
+                <tr>
+                  <td rowspan="4" style="border-top: 1px dashed var(--line);">Male 1 (MCCS0-SA1)</td>
+                  <td style="border-top: 1px dashed var(--line);">MIT-VM-RS</td>
+                  <td style="border-top: 1px dashed var(--line);">-29.91</td>
+                  <td style="border-top: 1px dashed var(--line);">0.25</td>
+                  <td style="border-top: 1px dashed var(--line);">0.21</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >Independent+Janssen</td>
+                  <td >-25.71</td>
+                  <td >0.34</td>
+                  <td ><strong>0.36</strong></td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >TCN+Janssen</td>
+                  <td >-30.63</td>
+                  <td >0.27</td>
+                  <td >0.35</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >AEyeHear</td>
+                  <td ><strong>-22.88</strong></td>
+                  <td ><strong>0.40</strong></td>
+                  <td >0.31</td>
+                </tr>
+                
+                <tr>
+                  <td rowspan="4" style="border-top: 1px dashed var(--line);">Male 2 (MCCS0-SA2)</td>
+                  <td style="border-top: 1px dashed var(--line);">MIT-VM-RS</td>
+                  <td style="border-top: 1px dashed var(--line);">-28.52</td>
+                  <td style="border-top: 1px dashed var(--line);"><strong>0.40</strong></td>
+                  <td style="border-top: 1px dashed var(--line);"><strong>0.44</strong></td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >Independent+Janssen</td>
+                  <td >-26.56</td>
+                  <td >0.34</td>
+                  <td >0.33</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >TCN+Janssen</td>
+                  <td >-31.56</td>
+                  <td >0.31</td>
+                  <td >0.28</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >AEyeHear</td>
+                  <td ><strong>-22.50</strong></td>
+                  <td >0.38</td>
+                  <td >0.28</td>
+                </tr>
+                
+                <tr>
+                  <td rowspan="4" style="border-top: 1px dashed var(--line);">Female 1 (FADG0-SA1)</td>
+                  <td style="border-top: 1px dashed var(--line);">MIT-VM-RS</td>
+                  <td style="border-top: 1px dashed var(--line);">-20.32</td>
+                  <td style="border-top: 1px dashed var(--line);">0.39</td>
+                  <td style="border-top: 1px dashed var(--line);">0.36</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >Independent+Janssen</td>
+                  <td >-21.54</td>
+                  <td >0.33</td>
+                  <td >0.38</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >TCN+Janssen</td>
+                  <td >-30.13</td>
+                  <td >0.25</td>
+                  <td >0.31</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >AEyeHear</td>
+                  <td ><strong>-17.60</strong></td>
+                  <td ><strong>0.40</strong></td>
+                  <td ><strong>0.41</strong></td>
+                </tr>
+                
+                <tr>
+                  <td rowspan="4" style="border-top: 1px dashed var(--line);">Female 2 (FADG0-SA2)</td>
+                  <td style="border-top: 1px dashed var(--line);">MIT-VM-RS</td>
+                  <td style="border-top: 1px dashed var(--line);">-19.19</td>
+                  <td style="border-top: 1px dashed var(--line);">0.42</td>
+                  <td style="border-top: 1px dashed var(--line);"><strong>0.36</strong></td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >Independent+Janssen</td>
+                  <td >-17.21</td>
+                  <td >0.38</td>
+                  <td >0.33</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >TCN+Janssen</td>
+                  <td >-28.59</td>
+                  <td >0.29</td>
+                  <td >0.32</td>
+                </tr>
+                
+                <tr>
+                  
+                  <td >AEyeHear</td>
+                  <td ><strong>-14.59</strong></td>
+                  <td ><strong>0.46</strong></td>
+                  <td >0.34</td>
+                </tr>
+                
+            <tr style="background: #f8fafc;">
+              <td rowspan="4" style="background: #f8fafc; font-weight: 600; border-top: 2px solid var(--line);">Overall Speech Mean</td>
+              <td style="border-top: 2px solid var(--line);">MIT-VM-RS</td>
+              <td style="border-top: 2px solid var(--line);">-25.10</td>
+              <td style="border-top: 2px solid var(--line);">0.36</td>
+              <td style="border-top: 2px solid var(--line);">0.33</td>
+            </tr>
+            
+            <tr style="background: #f8fafc;">
+              
+              <td style="">Independent+Janssen</td>
+              <td style="">-23.25</td>
+              <td style="">0.35</td>
+              <td style=""><strong>0.35</strong></td>
+            </tr>
+            
+            <tr style="background: #f8fafc;">
+              
+              <td style="">TCN+Janssen</td>
+              <td style="">-30.34</td>
+              <td style="">0.28</td>
+              <td style="">0.32</td>
+            </tr>
+            
+            <tr style="background: #f8fafc;">
+              
+              <td style="">AEyeHear</td>
+              <td style=""><strong>-19.88</strong></td>
+              <td style=""><strong>0.41</strong></td>
+              <td style="">0.33</td>
+            </tr>
+            
       </tbody>
     </table>
 
@@ -291,85 +618,84 @@
 
   <script>
     const clips = [
-      {
-        title: "Mary Had a Little Lamb - Checkerboard",
-        base: "demo/checkerboard/mary",
-        frameAlt: "DSLR Frame - Checkerboard Mary"
-      },
-      {
-        title: "TIMIT Male (MCCS0) SA1 - Checkerboard",
-        base: "demo/checkerboard/male_sa1",
-        frameAlt: "DSLR Frame - Checkerboard Male SA1",
-        transcript: "She had your dark suit and greasy wash water all year."
-      },
-      {
-        title: "TIMIT Male (MCCS0) SA2 - Checkerboard",
-        base: "demo/checkerboard/male_sa2",
-        frameAlt: "DSLR Frame - Checkerboard Male SA2",
-        transcript: "Don't ask me to carry an oily rag like that."
-      },
-      {
-        title: "TIMIT Female (FADG0) SA1 - Checkerboard",
-        base: "demo/checkerboard/female_sa1",
-        frameAlt: "DSLR Frame - Checkerboard Female SA1",
-        transcript: "She had your dark suit and greasy wash water all year."
-      },
-      {
-        title: "TIMIT Female (FADG0) SA2 - Checkerboard",
-        base: "demo/checkerboard/female_sa2",
-        frameAlt: "DSLR Frame - Checkerboard Female SA2",
-        transcript: "Don't ask me to carry an oily rag like that."
-      },
-      {
-        title: "Mary Had a Little Lamb - Chip Wrapper",
-        base: "demo/chip/mary",
-        frameAlt: "DSLR Frame - Chip Mary"
-      },
-      {
-        title: "TIMIT Male (MCCS0) SA1 - Chip Wrapper",
-        base: "demo/chip/male_sa1",
-        frameAlt: "DSLR Frame - Chip Male SA1",
-        transcript: "She had your dark suit and greasy wash water all year."
-      },
-      {
-        title: "TIMIT Male (MCCS0) SA2 - Chip Wrapper",
-        base: "demo/chip/male_sa2",
-        frameAlt: "DSLR Frame - Chip Male SA2",
-        transcript: "Don't ask me to carry an oily rag like that."
-      },
-      {
-        title: "TIMIT Female (FADG0) SA1 - Chip Wrapper",
-        base: "demo/chip/female_sa1",
-        frameAlt: "DSLR Frame - Chip Female SA1",
-        transcript: "She had your dark suit and greasy wash water all year."
-      },
-      {
-        title: "TIMIT Female (FADG0) SA2 - Chip Wrapper",
-        base: "demo/chip/female_sa2",
-        frameAlt: "DSLR Frame - Chip Female SA2",
-        transcript: "Don't ask me to carry an oily rag like that."
-      }
-    ];
+  {
+    "title": "Mary Had a Little Lamb - Checkerboard",
+    "surface": "checkerboard",
+    "base": "demo/checkerboard/mary",
+    "frameAlt": "DSLR Frame - Checkerboard Mary",
+    "transcript": null
+  },
+  {
+    "title": "TIMIT Male (MCCS0) SA1 - Checkerboard",
+    "surface": "checkerboard",
+    "base": "demo/checkerboard/male_sa1",
+    "frameAlt": "DSLR Frame - Checkerboard Male SA1",
+    "transcript": "She had your dark suit and greasy wash water all year."
+  },
+  {
+    "title": "TIMIT Male (MCCS0) SA2 - Checkerboard",
+    "surface": "checkerboard",
+    "base": "demo/checkerboard/male_sa2",
+    "frameAlt": "DSLR Frame - Checkerboard Male SA2",
+    "transcript": "Don't ask me to carry an oily rag like that."
+  },
+  {
+    "title": "TIMIT Female (FADG0) SA1 - Checkerboard",
+    "surface": "checkerboard",
+    "base": "demo/checkerboard/female_sa1",
+    "frameAlt": "DSLR Frame - Checkerboard Female SA1",
+    "transcript": "She had your dark suit and greasy wash water all year."
+  },
+  {
+    "title": "TIMIT Female (FADG0) SA2 - Checkerboard",
+    "surface": "checkerboard",
+    "base": "demo/checkerboard/female_sa2",
+    "frameAlt": "DSLR Frame - Checkerboard Female SA2",
+    "transcript": "Don't ask me to carry an oily rag like that."
+  },
+  {
+    "title": "Mary Had a Little Lamb - Chip Wrapper",
+    "surface": "chip",
+    "base": "demo/chip/mary",
+    "frameAlt": "DSLR Frame - Chip Mary",
+    "transcript": null
+  },
+  {
+    "title": "TIMIT Male (MCCS0) SA1 - Chip Wrapper",
+    "surface": "chip",
+    "base": "demo/chip/male_sa1",
+    "frameAlt": "DSLR Frame - Chip Male SA1",
+    "transcript": "She had your dark suit and greasy wash water all year."
+  },
+  {
+    "title": "TIMIT Male (MCCS0) SA2 - Chip Wrapper",
+    "surface": "chip",
+    "base": "demo/chip/male_sa2",
+    "frameAlt": "DSLR Frame - Chip Male SA2",
+    "transcript": "Don't ask me to carry an oily rag like that."
+  },
+  {
+    "title": "TIMIT Female (FADG0) SA1 - Chip Wrapper",
+    "surface": "chip",
+    "base": "demo/chip/female_sa1",
+    "frameAlt": "DSLR Frame - Chip Female SA1",
+    "transcript": "She had your dark suit and greasy wash water all year."
+  },
+  {
+    "title": "TIMIT Female (FADG0) SA2 - Chip Wrapper",
+    "surface": "chip",
+    "base": "demo/chip/female_sa2",
+    "frameAlt": "DSLR Frame - Chip Female SA2",
+    "transcript": "Don't ask me to carry an oily rag like that."
+  }
+];
 
-    const methods = [
-      {
-        label: "Groundtruth",
-        audio: "gt_audio.wav",
-        spec: "gt_spec.png",
-        alt: "Ground-truth spectrogram"
-      },
-      {
-        label: "MIT-VM-RS",
-        audio: "mit_raw_audio.wav",
-        spec: "mit_raw_spec.png",
-        alt: "MIT-VM-RS spectrogram"
-      },
-      {
-        label: "AEyeHear",
-        audio: "aeye_raw_audio.wav",
-        spec: "aeye_raw_spec.png",
-        alt: "AEyeHear spectrogram"
-      }
+    const allMethods = [
+      { label: "Groundtruth", audio: "gt_audio.wav", spec: "gt_spec.png", alt: "Ground-truth spectrogram" },
+      { label: "MIT-VM-RS", audio: "mit_raw_audio.wav", spec: "mit_raw_spec.png", alt: "MIT-VM-RS spectrogram" },
+      { label: "Independent+Janssen", audio: "indep_raw_audio.wav", spec: "indep_raw_spec.png", alt: "Independent+Janssen spectrogram" },
+      { label: "TCN+Janssen", audio: "tcn_raw_audio.wav", spec: "tcn_raw_spec.png", alt: "TCN+Janssen spectrogram" },
+      { label: "AEyeHear", audio: "aeye_raw_audio.wav", spec: "aeye_raw_spec.png", alt: "AEyeHear spectrogram" }
     ];
 
     const clipsContainer = document.getElementById("clips");
@@ -379,7 +705,7 @@
         ? `<p class="transcript">"${clip.transcript}"</p>`
         : "";
 
-      const rows = methods.map((method) => `
+      const rows = allMethods.map((method) => `
         <tr>
           <td class="method">${method.label}</td>
           <td>
@@ -395,7 +721,7 @@
         <section class="clip">
           <div class="clip-header">
             <img class="frame" src="${clip.base}/frame.png" alt="${clip.frameAlt}">
-            <div>
+            <div class="clip-info">
               <h3>Clip ${index + 1}: ${clip.title}</h3>
               ${transcript}
             </div>
